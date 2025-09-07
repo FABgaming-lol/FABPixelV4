@@ -45,11 +45,13 @@
   section { padding:100px 50px; }
   .title { text-align:center; margin-bottom:60px; font-size:2.5em; color:#fff; }
 
-  /* --- Services --- */
+  /* --- Services & Pricing --- */
   .services { display:flex; flex-wrap:wrap; gap:40px; justify-content:center; }
   .service { background:#111; padding:30px; width:250px; border-radius:20px; text-align:center; transition:0.3s, transform 0.3s, box-shadow 0.3s; cursor:pointer; }
   .service:hover { transform: translateY(-10px) scale(1.03); box-shadow:0 20px 50px rgba(255,255,255,0.2); }
   .service h3 { margin-bottom:15px; color:#fff; }
+  .service button { margin-top:15px; background:#fff; color:#000; padding:10px 25px; border-radius:50px; font-size:1em; transition:0.3s, transform 0.3s; }
+  .service button:hover { background:#ddd; transform:scale(1.08); }
 
   /* --- Portfolio Carousel --- */
   .carousel-container { position:relative; max-width:1000px; margin:auto; overflow:hidden; border-radius:20px; }
@@ -91,13 +93,14 @@
   </div>
   <ul>
     <li><a href="#services">Services</a></li>
+    <li><a href="#pricing">Pricing</a></li>
     <li><a href="#portfolio">Portfolio</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
 </nav>
 
 <header>
-  <img class="hero-logo" src="your-logo-url.png" alt="FABPixel Logo">
+  <img class="hero-logo" src="logo.png" alt="FABPixel Logo">
   <h1 class="fade-in">FABPixel</h1>
   <p class="fade-in delay-1">FABricating Art, One PIXEL at a time!</p>
   <button class="fade-in delay-2" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get Started</button>
@@ -117,6 +120,30 @@
     <div class="service fade-in delay-3">
       <h3>Vectors & Art</h3>
       <p>High-quality vector art for print, web, and digital use.</p>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="title fade-in">Pricing Plans</div>
+  <div class="services">
+    <div class="service fade-in delay-1">
+      <h3>Starter</h3>
+      <p>Basic logo design & vector art</p>
+      <p style="font-size:1.5em; font-weight:bold;">₹1,000</p>
+      <button onclick="alert('Get Started with Starter Plan')">Get Started</button>
+    </div>
+    <div class="service fade-in delay-2">
+      <h3>Professional</h3>
+      <p>Complete branding & vector package</p>
+      <p style="font-size:1.5em; font-weight:bold;">₹3,000</p>
+      <button onclick="alert('Get Started with Professional Plan')">Get Started</button>
+    </div>
+    <div class="service fade-in delay-3">
+      <h3>Premium</h3>
+      <p>Full service: branding, logos, vectors & priority support</p>
+      <p style="font-size:1.5em; font-weight:bold;">₹5,000</p>
+      <button onclick="alert('Get Started with Premium Plan')">Get Started</button>
     </div>
   </div>
 </section>
