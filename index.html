@@ -1,192 +1,108 @@
-import React, { useState, useEffect, useRef } from "react";
-import { motion } from "framer-motion";
-
-// Single-file page with all assets in the main directory (no folders)
-// Place logo.png, banner.jpg, work1.jpg, work2.jpg etc. directly in the repo root.
-
-export default function FABPixelLanding() {
-  const [theme] = useState("dark"); // fixed dark-only
-  const portfolio = [
-    "/work1.jpg",
-    "/work2.jpg",
-    "/work3.jpg",
-    "/work4.jpg",
-    "/work5.jpg",
-    "/work6.jpg",
-  ];
-
-  useEffect(() => {
-    document.documentElement.classList.add("dark");
-    document.documentElement.style.background = "#000000";
-
-    const block = (e: Event) => e.preventDefault();
-    window.addEventListener("contextmenu", block);
-    window.addEventListener("dragstart", block);
-    window.addEventListener("mousedown", block);
-    window.addEventListener("selectstart", block);
-    window.addEventListener("keydown", (e) => {
-      if (e.ctrlKey || e.metaKey) {
-        if (["s", "u", "p", "i", "j", "c", "Shift"].includes(e.key.toLowerCase())) {
-          e.preventDefault();
-        }
-      }
-    });
-
-    return () => {
-      window.removeEventListener("contextmenu", block);
-      window.removeEventListener("dragstart", block);
-      window.removeEventListener("mousedown", block);
-      window.removeEventListener("selectstart", block);
-    };
-  }, []);
-
-  return (
-    <div
-      onContextMenu={(e) => e.preventDefault()}
-      onDragStart={(e) => e.preventDefault()}
-      onMouseDown={(e) => e.preventDefault()}
-      onSelect={(e) => e.preventDefault()}
-      className="min-h-screen bg-black text-gray-100 select-none"
-    >
-      <header className="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <img src="/logo.png" alt="FABPIXEL" className="w-14 h-14 object-contain pointer-events-none" />
-          <div>
-            <h1 className="text-xl font-semibold">FABPIXEL</h1>
-            <p className="text-xs opacity-80">FABricating Art, one PIXEL at a time</p>
-          </div>
-        </div>
-
-        <nav className="flex items-center gap-6 opacity-90">
-          <a href="#work" className="hover:underline">Work</a>
-          <a href="#services" className="hover:underline">Services</a>
-          <a href="#pricing" className="hover:underline">Pricing</a>
-          <a href="#contact" className="hover:underline">Contact</a>
-        </nav>
-      </header>
-
-      <main className="max-w-6xl mx-auto px-6">
-        <section className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center py-8">
-          <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.5 }}>
-            <h2 className="text-4xl md:text-5xl font-extrabold leading-tight">Design that hits like a champ — crafted for brands that mean business.</h2>
-            <p className="mt-4 text-lg opacity-80">From bold brand systems to campaign art and merch mockups, FABPIXEL turns ideas into visual powerhouses.</p>
-
-            <div className="mt-6 flex flex-wrap gap-4">
-              <a href="#work" className="px-6 py-3 border border-gray-800 rounded-md font-medium">See Portfolio</a>
-              <a href="#contact" className="px-6 py-3 border border-gray-800 rounded-md font-medium">Contact</a>
-            </div>
-          </motion.div>
-
-          <motion.div initial={{ scale: 0.98, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 0.5 }} className="rounded-xl overflow-hidden shadow-xl">
-            <img alt="Banner" src="/banner.jpg" className="w-full h-full object-cover min-h-[260px] pointer-events-none select-none" />
-          </motion.div>
-        </section>
-
-        {/* Pricing */}
-        <section id="pricing" className="py-10">
-          <h3 className="text-2xl font-bold">Pricing (Showcase)</h3>
-          <p className="mt-2 opacity-80">These are example packages. All prices are informational only.</p>
-
-          <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              { title: "Starter", price: "₹5,000", items: ["Logo concept", "1 revision", "Basic social banner"] },
-              { title: "Professional", price: "₹12,000", items: ["Full logo system", "3 revisions", "Campaign art bundle"] },
-              { title: "Premium", price: "₹25,000", items: ["Brand strategy", "Unlimited revisions (1 month)", "Merch & print-ready"] },
-            ].map((plan) => (
-              <div key={plan.title} className="p-6 rounded-xl border border-gray-800 bg-black">
-                <h4 className="font-semibold text-xl">{plan.title}</h4>
-                <div className="mt-4 font-bold text-2xl">{plan.price}</div>
-                <ul className="mt-4 text-sm opacity-70 space-y-1">
-                  {plan.items.map((item) => <li key={item}>{item}</li>)}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section id="work" className="py-10">
-          <h3 className="text-2xl font-bold">Selected Work</h3>
-          <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
-            {portfolio.map((p, i) => (
-              <CanvasCard key={p} src={p} title={`Project ${i + 1}`} />
-            ))}
-          </div>
-        </section>
-
-        <section id="contact" className="py-10">
-          <h3 className="text-2xl font-bold">Get in touch</h3>
-          <div className="mt-4 space-y-1 text-sm opacity-80">
-            <div>Email: fabpixel@proton.com</div>
-            <div>Instagram: @fabpixel</div>
-          </div>
-        </section>
-
-        <footer className="py-12 text-center opacity-80">
-          © {new Date().getFullYear()} FABPIXEL — FABricating Art, one PIXEL at a time.
-        </footer>
-      </main>
-    </div>
-  );
-}
-
-function CanvasCard({ src, title }: { src: string; title: string }) {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [loaded, setLoaded] = useState(false);
-
-  useEffect(() => {
-    let cancelled = false;
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    const img = new Image();
-    img.crossOrigin = "anonymous";
-    img.src = src;
-    img.onload = () => {
-      if (cancelled) return;
-      const W = 400;
-      const H = Math.round((img.height / img.width) * W);
-      canvas.width = W;
-      canvas.height = H;
-      ctx.fillStyle = "#000";
-      ctx.fillRect(0, 0, W, H);
-      const scale = Math.max(W / img.width, H / img.height);
-      const sw = img.width * scale;
-      const sh = img.height * scale;
-      const sx = (W - sw) / 2;
-      const sy = (H - sh) / 2;
-      ctx.drawImage(img, sx, sy, sw, sh);
-
-      const logo = new Image();
-      logo.src = "/logo.png";
-      logo.onload = () => {
-        const tileW = Math.round(W * 0.2);
-        const tileH = Math.round((logo.height / logo.width) * tileW) || Math.round(W * 0.06);
-        ctx.globalAlpha = 0.15;
-        const stepX = Math.round(tileW * 1.5);
-        const stepY = Math.round(tileH * 1.8);
-        for (let x = -stepX; x < W + stepX; x += stepX) {
-          for (let y = -stepY; y < H + stepY; y += stepY) {
-            ctx.drawImage(logo, x, y, tileW, tileH);
-          }
-        }
-        ctx.globalAlpha = 1;
-        setLoaded(true);
-      };
-      logo.onerror = () => setLoaded(true);
-    };
-    img.onerror = () => setLoaded(true);
-    return () => { cancelled = true; };
-  }, [src]);
-
-  return (
-    <div className="rounded overflow-hidden border border-gray-800 bg-black relative select-none pointer-events-none">
-      <canvas ref={canvasRef} className="w-full h-48 object-cover" />
-      {!loaded && <div className="absolute text-sm opacity-70 p-2">Loading…</div>}
-      <div className="p-3 pointer-events-none">
-        <div className="font-semibold">{title}</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FABPIXEL Showcase</title>
+  <style>
+    body { margin:0; font-family: sans-serif; background:#000; color:#fff; }
+    header, footer { max-width:1200px; margin:auto; padding:20px; }
+    nav a { margin-right:15px; color:#fff; text-decoration:none; }
+    nav a:hover { text-decoration:underline; }
+    main { max-width:1200px; margin:auto; padding:20px; }
+    .portfolio { display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:15px; }
+    .portfolio canvas { width:100%; height:200px; display:block; }
+    .pricing { display:flex; gap:15px; flex-wrap:wrap; }
+    .pricing .plan { border:1px solid #555; padding:15px; border-radius:10px; flex:1; background:#111; }
+  </style>
+</head>
+<body>
+  <header>
+    <div style="display:flex; align-items:center; gap:15px;">
+      <img src="logo.png" alt="FABPIXEL" style="width:60px; height:60px; pointer-events:none;">
+      <div>
+        <h1>FABPIXEL</h1>
+        <p>FABricating Art, one PIXEL at a time</p>
       </div>
     </div>
-  );
-}
+    <nav>
+      <a href="#work">Work</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <h2>Selected Work</h2>
+      <div class="portfolio" id="portfolio"></div>
+    </section>
+
+    <section id="pricing">
+      <h2>Pricing (Showcase)</h2>
+      <div class="pricing">
+        <div class="plan">
+          <h3>Starter</h3>
+          <p>₹5,000</p>
+          <ul><li>Logo concept</li><li>1 revision</li><li>Basic social banner</li></ul>
+        </div>
+        <div class="plan">
+          <h3>Professional</h3>
+          <p>₹12,000</p>
+          <ul><li>Full logo system</li><li>3 revisions</li><li>Campaign art bundle</li></ul>
+        </div>
+        <div class="plan">
+          <h3>Premium</h3>
+          <p>₹25,000</p>
+          <ul><li>Brand strategy</li><li>Unlimited revisions (1 month)</li><li>Merch & print-ready</li></ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <h2>Contact</h2>
+      <p>Email: fabpixel@proton.com</p>
+      <p>Instagram: @fabpixel</p>
+    </section>
+  </main>
+
+  <footer>
+    © 2025 FABPIXEL — FABricating Art, one PIXEL at a time.
+  </footer>
+
+  <script>
+    const portfolioImages = ['work1.jpg','work2.jpg','work3.jpg','work4.jpg','work5.jpg','work6.jpg'];
+    const portfolioDiv = document.getElementById('portfolio');
+
+    portfolioImages.forEach((src, index) => {
+      const canvas = document.createElement('canvas');
+      canvas.width = 400;
+      canvas.height = 300;
+      const ctx = canvas.getContext('2d');
+      const img = new Image();
+      img.src = src;
+      img.onload = () => {
+        ctx.drawImage(img,0,0,canvas.width,canvas.height);
+        const logo = new Image();
+        logo.src = 'logo.png';
+        logo.onload = () => {
+          ctx.globalAlpha = 0.15;
+          const stepX = 100, stepY = 100;
+          for(let x=-50;x<canvas.width;x+=stepX){
+            for(let y=-50;y<canvas.height;y+=stepY){
+              ctx.drawImage(logo,x,y,50,50);
+            }
+          }
+          ctx.globalAlpha=1;
+        };
+      };
+      portfolioDiv.appendChild(canvas);
+    });
+
+    // Disable right click, selection, and drag
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('dragstart', e => e.preventDefault());
+    document.addEventListener('selectstart', e => e.preventDefault());
+  </script>
+</body>
+</html>
